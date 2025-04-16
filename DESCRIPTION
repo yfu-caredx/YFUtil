@@ -1,0 +1,10 @@
+Package: YFUtil
+Title: Dennis' Utility Functions (One Line, Title Case)
+Version: 0.0.1
+Authors@R: 
+    person("Dennis", "Fu", , "fydennis@gmail.com", role = c("aut", "cre"))
+Description: A collection of custom utility functions..
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
