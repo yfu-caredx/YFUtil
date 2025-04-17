@@ -2,3 +2,9 @@
 
 export("%w/%")
 export("%w/o%")
+export(fancy_message)
+export(filename_sans_ext)
+export(init_environment)
+importFrom(glue,glue)
+importFrom(rlang,"%||%")
+importFrom(utils,installed.packages)
