@@ -8,10 +8,9 @@
 #' @export
 init_DLM <- function() {
   pkg_install(Cs(tictoc, pROC, survminer))
-  if (!"dynamicLM" %in% utils::installed.packages()) {
+  if (!"dynamicLM" %in% rownames(utils::installed.packages())) {
     devtools::install_github("thehanlab/dynamicLM")
   }
-  library(dynamicLM)
   set.seed(42)
 
   ## params
@@ -27,12 +26,12 @@ init_DLM <- function() {
 #' @keywords internal
 #' @export
 dlm_mk_fm <- function(var = NULL) {
-  str_glue(
+  glue::glue(
     "{LHS} ~ {RHS}",
     LHS = "Hist(time, status, LM)",
-    RHS1 = str_c(var, collapse = " + "),
-    RHS2 = str_c(c("LM1", "LM2", "cluster(subject_id)"), collapse = " + "),
-    RHS = str_c(RHS1, RHS2, sep = " + "),
+    RHS1 = paste(var, collapse = " + "),
+    RHS2 = paste(c("LM1", "LM2", "cluster(subject_id)"), collapse = " + "),
+    RHS = paste(RHS1, RHS2, sep = " + "),
   ) |>
   stats::as.formula()
 }
@@ -54,6 +53,18 @@ dlm_mk_lmdata <- function(df = NULL,
                           func_lms = c("linear", "quadratic")
                           ) {
   df |>
-    stack_data(outcome, lms, w, cov_list, format = "long", id = id, rtime = rtime) |>
-    add_interactions(cov_interact, func_covars = func_covars, func_lms = func_lms)
+    dynamicLM::stack_data(
+      outcome,
+      lms,
+      w,
+      cov_list,
+      format = "long",
+      id = id,
+      rtime = rtime
+    ) |>
+    dynamicLM::add_interactions(
+      cov_interact,
+      func_covars = func_covars,
+      func_lms = func_lms
+    )
 }

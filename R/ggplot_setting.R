@@ -10,11 +10,11 @@ init_ggplot <- function() {
   pacman::p_load(ggplot2, cowplot)
   ## ggplot theme setting
   # theme_set(theme_bw())
-  theme_set(theme_cowplot(font_size = 12))
-  theme_update(plot.title = element_text(hjust = 0.5))
-  theme_update(plot.subtitle = element_text(hjust = 0.5))
+  ggplot2::theme_set(cowplot::theme_cowplot(font_size = 12))
+  ggplot2::theme_update(plot.title = ggplot2::element_text(hjust = 0.5))
+  ggplot2::theme_update(plot.subtitle = ggplot2::element_text(hjust = 0.5))
 
-  color_palette_greenred <- colorRampPalette(
+  invisible(grDevices::colorRampPalette(
     c(
       "#85af5e",
       "#DCDC30",
@@ -25,7 +25,7 @@ init_ggplot <- function() {
       "#a60000",
       "#520101"
     )
-  )
+  ))
 }
 
 

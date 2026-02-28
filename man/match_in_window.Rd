@@ -84,7 +84,7 @@ df_y <- tibble::tibble(
   t_y = c(95, 85, 110, 140, 180)
 )
 
-match_extreme_within_window(
+match_in_window(
   df_x, df_y,
   id = id,
   x_value = x, x_time = t_x,
