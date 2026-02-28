@@ -1,5 +1,5 @@
 Package: YFUtil
-Title: Dennis' Utility Functions (One Line, Title Case)
+Title: Dennis' Utility Functions
 Version: 0.0.1
 Authors@R: 
     person("Dennis", "Fu", , "fydennis@gmail.com", role = c("aut", "cre"))
