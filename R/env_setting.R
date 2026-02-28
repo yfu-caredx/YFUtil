@@ -24,11 +24,8 @@ init_environment <- function() {
 
   # Use pacman to load (and install if missing) required packages
   pacman::p_load(
-    tidyverse,
-    here,
-    janitor,
-    conflicted,
-    logger
+    c("tidyverse", "here", "janitor", "conflicted", "logger"),
+    character.only = TRUE
   )
 
   ## random seed initiation
@@ -56,5 +53,5 @@ init_environment <- function() {
 pkg_install <- function(packages) {
   installed <- rownames(utils::installed.packages())
   (packages %w/o% installed) |>
-    lapply(\(.) pacman::p_install(., character.only = TRUE))
+    lapply(\(pkg) pacman::p_install(pkg, character.only = TRUE))
 }

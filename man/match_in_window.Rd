@@ -72,6 +72,7 @@ tied, the earliest \code{y_time} is selected. If no records fall within the wind
 the merged columns will contain \code{NA}.
 }
 \examples{
+\dontshow{if (requireNamespace("tibble", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 df_x <- tibble::tibble(
   id  = c(1, 1, 2),
   x   = c(10, 20, 30),
@@ -93,5 +94,5 @@ match_in_window(
   side = "both",
   extreme = "max"
 )
-
+\dontshow{\}) # examplesIf}
 }

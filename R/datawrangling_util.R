@@ -4,6 +4,7 @@
 #' in a secondary data frame (`df_y`) for the same subject and finds the single
 #' extreme (maximum or minimum) value of a target variable (`y_value`)
 #' whose test time is within a specified window of the primary variable’s test time.
+#' @importFrom rlang .data
 #'
 #' @param df_x A data frame containing the primary measurements.
 #' @param df_y A data frame containing the secondary measurements to match against.
@@ -32,7 +33,7 @@
 #' - `matched_y`: the selected `y_value` (or `NA` if no match),
 #' - `matched_y_time`: the corresponding `y_time`.
 #'
-#' @examples
+#' @examplesIf requireNamespace("tibble", quietly = TRUE)
 #' df_x <- tibble::tibble(
 #'   id  = c(1, 1, 2),
 #'   x   = c(10, 20, 30),
@@ -89,36 +90,46 @@ match_in_window <- function(
       by = rlang::as_name(id)
     ) |>
     dplyr::mutate(
-      dt     = y_t - x_t,        # positive => y after x
-      abs_dt = abs(dt)
+      dt     = .data$y_t - .data$x_t,        # positive => y after x
+      abs_dt = abs(.data$dt)
     )
 
   # Keep only candidates within the requested window
   candidates <- {
     if (side == "prior") {
       candidates |>
-        dplyr::filter(dt < 0, dt >= -w)
+        dplyr::filter(.data$dt < 0, .data$dt >= -w)
     } else if (side == "post") {
       candidates |>
-        dplyr::filter(dt > 0, dt <=  w)
+        dplyr::filter(.data$dt > 0, .data$dt <=  w)
     } else {
       candidates |>
-        dplyr::filter(abs_dt <= w)
+        dplyr::filter(.data$abs_dt <= w)
     }
   }
 
   # Choose extreme per row of df_x
   ordered <- if (extreme == "max") {
     candidates |>
-      dplyr::arrange(dplyr::desc(y_val), abs_dt, y_t)
+      dplyr::arrange(
+        dplyr::desc(.data$y_val),
+        .data$abs_dt,
+        .data$y_t
+      )
   } else {
     candidates |>
-      dplyr::arrange(y_val, abs_dt, y_t)
+      dplyr::arrange(.data$y_val, .data$abs_dt, .data$y_t)
   }
 
   picked <- ordered |>
-    dplyr::slice_head(n = 1, .by = .row_id___) |>
-    dplyr::select(.row_id___, matched_y = y_val, matched_y_time = y_t)
+    dplyr::group_by(.data$.row_id___) |>
+    dplyr::slice_head(n = 1) |>
+    dplyr::ungroup() |>
+    dplyr::transmute(
+      .row_id___ = .data$.row_id___,
+      matched_y = .data$y_val,
+      matched_y_time = .data$y_t
+    )
 
   # Left-join back
   out <- x_tagged |>

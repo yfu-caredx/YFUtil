@@ -7,16 +7,16 @@
 #' @importFrom devtools install_github
 #' @export
 init_DLM <- function() {
-  pkg_install(Cs(tictoc, pROC, survminer))
+  pkg_install(c("tictoc", "pROC", "survminer"))
   if (!"dynamicLM" %in% rownames(utils::installed.packages())) {
     devtools::install_github("thehanlab/dynamicLM")
   }
   set.seed(42)
 
   ## params
-  day_1yr <<- 365.25
-  day_1mo <<- day_1yr / 12
-  outcome <<- list(time = "time", status = "status")
+  assign("day_1yr", 365.25, envir = .GlobalEnv)
+  assign("day_1mo", get("day_1yr", envir = .GlobalEnv) / 12, envir = .GlobalEnv)
+  assign("outcome", list(time = "time", status = "status"), envir = .GlobalEnv)
 }
 
 #' Generate DLM formula from selected variables
@@ -26,14 +26,10 @@ init_DLM <- function() {
 #' @keywords internal
 #' @export
 dlm_mk_fm <- function(var = NULL) {
-  glue::glue(
-    "{LHS} ~ {RHS}",
-    LHS = "Hist(time, status, LM)",
-    RHS1 = paste(var, collapse = " + "),
-    RHS2 = paste(c("LM1", "LM2", "cluster(subject_id)"), collapse = " + "),
-    RHS = paste(RHS1, RHS2, sep = " + "),
-  ) |>
-  stats::as.formula()
+  rhs_1 <- paste(var, collapse = " + ")
+  rhs_2 <- paste(c("LM1", "LM2", "cluster(subject_id)"), collapse = " + ")
+  rhs <- paste(rhs_1, rhs_2, sep = " + ")
+  stats::as.formula(paste("Hist(time, status, LM)", rhs, sep = " ~ "))
 }
 
 #' Generate stacked LM data
@@ -52,9 +48,15 @@ dlm_mk_lmdata <- function(df = NULL,
                           func_covars = "linear",
                           func_lms = c("linear", "quadratic")
                           ) {
+  outcome_obj <- get0(
+    "outcome",
+    envir = .GlobalEnv,
+    ifnotfound = list(time = "time", status = "status")
+  )
+
   df |>
     dynamicLM::stack_data(
-      outcome,
+      outcome_obj,
       lms,
       w,
       cov_list,

@@ -28,16 +28,15 @@ c_ <- \(...) unlist(rlang::list2(...))
 
 #' Character strings from unquoted names
 #' same as Hmisc::Cs()
+#' @param ... Unquoted names to be converted to a character vector.
 #' @importFrom rlang list2
 #' @return character string vector.
 #' @export
 Cs <- function(...) {
-  return(
-    substitute(rlang::list2(...)) |>
-      purrr::discard(~ .x == "") |>
-      as.character() %>%
-      .[-1]
-  )
+  vals <- substitute(rlang::list2(...)) |>
+    purrr::discard(~ .x == "") |>
+    as.character()
+  vals[-1]
 }
 
 #' Intersection of on two vectors. Similar to base::intersect
@@ -59,7 +58,6 @@ Cs <- function(...) {
 #' @return A vector consist of the (asymmetric) difference of x to y
 #' @export
 "%w/o%" <- \(x, y) x[!x %in% y]
-
 
 
 

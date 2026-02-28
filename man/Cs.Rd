@@ -7,6 +7,9 @@ same as Hmisc::Cs()}
 \usage{
 Cs(...)
 }
+\arguments{
+\item{...}{Unquoted names to be converted to a character vector.}
+}
 \value{
 character string vector.
 }

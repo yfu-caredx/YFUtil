@@ -34,4 +34,6 @@ NULL
 #' @keywords internal
 #' @importFrom scales label_percent
 #' @export
-label_pct_round1 = scales::label_percent(0.1)
+label_pct_round1 <- function(x) {
+  scales::label_percent(accuracy = 0.1)(x)
+}

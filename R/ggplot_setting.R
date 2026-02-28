@@ -6,8 +6,7 @@
 #' @importFrom ggpubr ggarrange
 #' @export
 init_ggplot <- function() {
-  # pkg_install(cowplot, ggplot2)
-  pacman::p_load(ggplot2, cowplot)
+  pkg_install(c("ggplot2", "cowplot"))
   ## ggplot theme setting
   # theme_set(theme_bw())
   ggplot2::theme_set(cowplot::theme_cowplot(font_size = 12))

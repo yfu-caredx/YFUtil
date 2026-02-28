@@ -16,14 +16,15 @@ Imports:
     here,
     janitor,
     knitr,
-    logger,
     magrittr,
     pacman,
     purrr,
     rlang,
     scales
 Suggests:
-    dynamicLM
+    dynamicLM,
+    logger,
+    tibble
 Depends:
     R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
