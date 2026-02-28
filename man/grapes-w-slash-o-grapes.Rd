@@ -2,7 +2,7 @@
 % Please edit documentation in R/basic_util.R
 \name{\%w/o\%}
 \alias{\%w/o\%}
-\title{Difference on a vector to another vector. Similar to setdiff(x, y)}
+\title{Difference on a vector to another vector. Similar to base::setdiff}
 \usage{
 x \%w/o\% y
 }

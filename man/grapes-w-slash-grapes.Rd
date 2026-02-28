@@ -2,7 +2,7 @@
 % Please edit documentation in R/basic_util.R
 \name{\%w/\%}
 \alias{\%w/\%}
-\title{Intersection of on two vectors. Similar to intersect(x, y)}
+\title{Intersection of on two vectors. Similar to base::intersect}
 \usage{
 x \%w/\% y
 }
